@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-namespace SmartHouseMVC.Models
+using SmartHouseMVC.Models.Interfaces;
+namespace SmartHouseMVC.Models.ImplementedInterfaces
 {
     public class Conditioner:Applience, ITemperatureable
     {

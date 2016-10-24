@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
-using SmartHouseMVC.Models;
+using SmartHouseMVC.Models.Interfaces;
+using SmartHouseMVC.Models.ImplementedInterfaces;
+using SmartHouseMVC.Models.Factory;
 
 namespace SmartHouseMVC.Controllers
 {
@@ -14,22 +15,26 @@ namespace SmartHouseMVC.Controllers
         IList<string> listOfChannels = new List<string> { "MTV", "1+1", "ICTV", "2+2" };
         public ActionResult Index()
         {
-            IDictionary<int, Applience> applienceDictionary;
+            IDictionary<int, ISwitchable> applienceDictionary;
 
             if (Session["Apps"] == null)
             {
-                applienceDictionary = new SortedDictionary<int, Applience>();
-                applienceDictionary.Add(1, new Lamp("Lamp", 50, 100));
-                applienceDictionary.Add(2, new Conditioner("Conditioner", 25));
-                applienceDictionary.Add(3, new Microwave("Microwave", 50, 250));
-                applienceDictionary.Add(4, new TV("TV", 8, 20, listOfChannels, 0));
+                ApplienceFactory app= new LampCreator();
+                applienceDictionary = new SortedDictionary<int, ISwitchable>();
+                applienceDictionary.Add(1, app.CreateSwitchable());
+                app = new ConditionerCreator();
+                applienceDictionary.Add(2, app.CreateSwitchable());
+                app=new MicrowaveCreator();
+                applienceDictionary.Add(3,app.CreateSwitchable() );
+                app = new TVCreator();
+                applienceDictionary.Add(4, app.CreateSwitchable());
 
                 Session["Apps"] = applienceDictionary;
                 Session["NextId"] = 5;
             }
             else
             {
-                applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+                applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
             }
 
             SelectListItem[] appList = new SelectListItem[4];
@@ -43,27 +48,32 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Add(string app)
         {
-            Applience newApp;
+            ISwitchable newApp;
+            ApplienceFactory appCreate;
 
             switch (app)
             {
-
+                   
                 default:
-                    newApp = new Lamp("Lamp", 50, 100);
+                    appCreate = new LampCreator();
+                    newApp = appCreate.CreateSwitchable();
                     break;
                 case "conditioner":
-                    newApp = new Conditioner("Conditioner", 25);
+                    appCreate = new ConditionerCreator();
+                    newApp = appCreate.CreateSwitchable();
                     break;
                 case "microwave":
-                    newApp = new Microwave("Microwave", 50, 250);
+                    appCreate = new MicrowaveCreator();
+                    newApp = appCreate.CreateSwitchable();
                     break;
                 case "tv":
-                    newApp = new TV("TV", 8, 20, listOfChannels, 0);
+                    appCreate = new TVCreator();
+                    newApp = appCreate.CreateSwitchable();
                     break;
             }
 
             int id = (int)Session["NextId"];
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
             applienceDictionary.Add(id, newApp);
             id++;
             Session["NextId"] = id;
@@ -73,7 +83,7 @@ namespace SmartHouseMVC.Controllers
 
         public ActionResult Switch(int id)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
             ISwitchable app = applienceDictionary[id];
             app.OnOff();
 
@@ -81,7 +91,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Change(int id, string action)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
 
 
             IChangeable app = applienceDictionary[id] as IChangeable;
@@ -101,7 +111,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Temperature(int id, string action, string temperatureTB)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
             ITemperatureable app = applienceDictionary[id] as ITemperatureable;
             if (action == "Temperature")
             {
@@ -113,7 +123,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Cook(int id, string action)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
             ICook app = applienceDictionary[id] as ICook;
             if (action == "Food")
             {
@@ -126,7 +136,7 @@ namespace SmartHouseMVC.Controllers
         public ActionResult ChannelMethod(int id, string action, string channelTV)
         {
             IList<string> list;
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
             IChannel app = applienceDictionary[id] as IChannel;
             switch (action)
             {
@@ -154,7 +164,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Delete(int id)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
             applienceDictionary.Remove(id);
             return RedirectToAction("Index");
         }

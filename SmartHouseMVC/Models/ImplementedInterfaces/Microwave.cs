@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using System.Web;
-
-namespace SmartHouseMVC.Models
+using SmartHouseMVC.Models.Interfaces;
+namespace SmartHouseMVC.Models.ImplementedInterfaces
 {
     public class Microwave:Applience, IChangeable, ICook
     {
         private bool food;
-        private int max=250;
+        private int max;
        
         public Microwave(string name, int unit, int max)
         {

@@ -115,16 +115,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Applience.cs" />
-    <Compile Include="Models\Conditioner.cs" />
-    <Compile Include="Models\IChangeable.cs" />
-    <Compile Include="Models\IChannel.cs" />
-    <Compile Include="Models\ICook.cs" />
-    <Compile Include="Models\ISwitchable.cs" />
-    <Compile Include="Models\ITemperatureable.cs" />
-    <Compile Include="Models\Lamp.cs" />
-    <Compile Include="Models\Microwave.cs" />
-    <Compile Include="Models\TV.cs" />
+    <Compile Include="Models\Factory\ApplienceFactory.cs" />
+    <Compile Include="Models\Factory\ConditionerCreator.cs" />
+    <Compile Include="Models\Factory\LampCreator.cs" />
+    <Compile Include="Models\Factory\MicrowaveCreator.cs" />
+    <Compile Include="Models\Factory\TVCreator.cs" />
+    <Compile Include="Models\ImplementedInterfaces\Applience.cs" />
+    <Compile Include="Models\ImplementedInterfaces\Conditioner.cs" />
+    <Compile Include="Models\Interfaces\IChangeable.cs" />
+    <Compile Include="Models\Interfaces\IChannel.cs" />
+    <Compile Include="Models\Interfaces\ICook.cs" />
+    <Compile Include="Models\Interfaces\ISwitchable.cs" />
+    <Compile Include="Models\Interfaces\ITemperatureable.cs" />
+    <Compile Include="Models\ImplementedInterfaces\Lamp.cs" />
+    <Compile Include="Models\ImplementedInterfaces\Microwave.cs" />
+    <Compile Include="Models\ImplementedInterfaces\TV.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

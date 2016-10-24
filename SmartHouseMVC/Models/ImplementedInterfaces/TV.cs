@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-namespace SmartHouseMVC.Models
+using SmartHouseMVC.Models.Interfaces;
+namespace SmartHouseMVC.Models.ImplementedInterfaces
 {
     public class TV : Applience, IChannel, IChangeable
     {
         public IList<string> channels;
         public string currentChannel;
-        int max = 20;
+        int max;
         public TV(string name, int unit, int max, IList<string> listOfChannels, int positionOfCurrentChan)
         {
             Name = name;

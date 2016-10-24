@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartHouseMVC.Models
+namespace SmartHouseMVC.Models.Interfaces
 {
    public interface IChannel
     {
