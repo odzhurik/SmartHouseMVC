@@ -1,0 +1,9 @@
+﻿@model IList<string>
+
+<select multiple>
+    @foreach (string item in Model)
+    {
+        <option>@item</option>
+    }
+
+</select>

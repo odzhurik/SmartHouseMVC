@@ -1,0 +1,144 @@
+﻿
+@using SmartHouseMVC.Models
+
+@model IDictionary<int, Applience>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("Add", "Applience"))
+{
+    @Html.DropDownList("app", (IEnumerable<SelectListItem>)ViewBag.AppList)
+    <input type="submit" value="Добавить" class="btn btn-default">
+}
+@foreach (var item in Model)
+{
+    <div class="app-div">
+        <span class="labelstyle"> @item.Value.Name</span>
+        <br />
+        @if (item.Value is ISwitchable)
+        {
+            using (@Html.BeginForm("Switch" + '/' + item.Key, "Applience"))
+            {
+                switch (item.Value.Name)
+                {
+                    case "Lamp":
+                        {
+
+                            <input type="image" name="action" value="OnOff" class="img-thumbnail"  src="~/Images/15-Light-Bulb-icon1.png" />
+                            break;
+                        }
+                    case "Conditioner":
+                        {
+                            <input type="image" name="action" value="OnOff" id="conButton" class="img-thumbnail"  src="~/Images/112132-2001.png" />
+                            break;
+                        }
+                    case "Microwave":
+                        {
+                            <input type="image" name="action" value="OnOff" id="MicroButton" class="img-thumbnail" src="~/Images/microwave-icon-201.png" />
+                            break;
+                        }
+                    case "TV":
+                        {
+                            <input type="image" name="action" value="OnOff" class="img-thumbnail"  src="~/Images/retro-tv-icon-615261.png" />
+                            break;
+                        }
+                }
+                <br />
+            }
+        }
+        @if (item.Value is IChangeable)
+        {
+
+            using (@Html.BeginForm("Change"+'/' + item.Key, "Applience"))
+            {
+               
+                <br />
+                <button type="submit" name="action" value="Down" class="btn btn-warning">-</button>
+                <button type="submit" name="action" value="Up" class="btn btn-success">+</button>
+                <br />
+            }
+        }
+        @if (item.Value is ITemperatureable)
+        {
+            using (@Html.BeginForm("Temperature" + '/' + item.Key, "Applience", FormMethod.Post, new { id = "myForm" }))
+            {
+                <span id="spanOnOffcon" hidden="hidden">@item.Value.State</span>
+                <br />
+                <input type="text" name="temperatureTB" id="temperatureTB" />
+                <input type="button" id="setButton" value="Set" class="btn btn-primary" />
+                <br />
+            }
+            <span id="spanState">
+                @if (TempData["conditioner"] != null)
+                {
+                    @TempData["conditioner"];
+                }
+
+            </span>
+
+        }
+
+        @if (item.Value is ICook)
+        {
+
+            using (@Html.BeginForm("Cook"+'/' + item.Key, "Applience", FormMethod.Post, new { id = "myForm2" }))
+            {
+                
+                <span id="spanOnOff" hidden="hidden">@item.Value.State</span>
+                <br />
+                <br />
+                <input type="text" name="microTB" id="microTB" />
+                <label> <input type="checkbox" name="action" value="Food" id="checkbox" />Food </label>
+                <button type="button"  value="Reheat" id="reheatButton" class="btn btn-info">Reheat</button>
+                <br />
+               
+
+            }
+        }
+        @if (item.Value is IChannel)
+        {
+
+            using (@Html.BeginForm("ChannelMethod" + '/' + item.Key, "Applience"))
+            {
+
+                
+                <br />
+                <br />
+                <button type="submit" name="action" value="show" class="btn btn-primary">Show</button>
+                if ((List<string>)TempData["List"] != null)
+                {
+                    Html.RenderPartial("TV", (List<string>)TempData["List"]);
+                }
+                <br />
+                <input type="text" name="channelTV" />
+                <button type="submit" name="action" value="AddChannel" class="btn btn-primary">Add Channel</button>
+                <br />
+    <button type="submit" name="action" value="DeleteChannel" class="btn btn-warning">Delete current channel</button>
+                <br />
+                <button type="submit" name="action" value="Prev" class="btn btn-info"><-</button>
+                <button type="submit" name="action" value="Next" class="btn btn-primary">-></button>
+            }
+        }
+        <br />
+        <div id="results"></div>
+        <span class="labelStatus">@item.Value.ShowStatus()</span>
+        <br />
+        @using(@Html.BeginForm("Delete/"+item.Key,"Applience"))
+        { 
+        <button type="submit" class="btn btn-danger">Delete</button>
+        }
+
+        
+    </div>
+   
+}
+<script src="~/Scripts/CountDownFunctions.js"></script>
+
+
+
+
+
+
+
