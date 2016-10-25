@@ -56,9 +56,10 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
                     Unit--;
             }
         }
-        public override string ShowStatus()
+        public override string ToString()
+
         {
-            string status = base.ShowStatus();
+            string status = base.ToString();
 
             if (State)
                 status += " current volume " + Unit + " current channel " + currentChannel;

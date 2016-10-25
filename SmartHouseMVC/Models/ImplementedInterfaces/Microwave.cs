@@ -64,9 +64,10 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
                     Unit = max;
             }
         }
-        public override string ShowStatus()
+        public override string ToString()
+
         {
-            string status= base.ShowStatus();
+            string status = base.ToString();
             if (State)
                 status += " current microwave power is " + Unit + " W";
             return status;

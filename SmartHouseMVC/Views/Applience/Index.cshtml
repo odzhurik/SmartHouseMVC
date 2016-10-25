@@ -123,7 +123,7 @@
         }
         <br />
         <div id="results"></div>
-        <span class="labelStatus">@item.Value.ShowStatus()</span>
+        <span class="labelStatus">@item.Value.ToString()</span>
         <br />
         @using(@Html.BeginForm("Delete/"+item.Key,"Applience"))
         { 

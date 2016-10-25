@@ -40,9 +40,10 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
                     Unit -= 10;
             }
         }
-        public override string ShowStatus()
+        public override string ToString()
+
         {
-            string status = base.ShowStatus();
+            string status = base.ToString();
             if(State)
             {
                 status += " current brightness " + Unit;

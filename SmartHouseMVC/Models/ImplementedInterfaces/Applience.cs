@@ -42,7 +42,8 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
                 State = true;
             }
         }
-        public virtual string ShowStatus()
+        public override string ToString()
+
         {
             string status = " ";
             if (State)

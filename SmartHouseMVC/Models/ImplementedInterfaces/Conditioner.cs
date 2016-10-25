@@ -35,9 +35,11 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
 
             defaultTemp = Temperature;
         }
-        public override string ShowStatus()
+        public override string ToString()
+
+
         {
-            string status = base.ShowStatus();
+            string status = base.ToString();
             if (State)
                 status += " current temperature is " + defaultTemp + " C";
             return status;
