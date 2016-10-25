@@ -8,7 +8,7 @@ namespace SmartHouseMVC.Models.Factory
 {
     public class ConditionerCreator:ApplienceFactory
     {
-        public override ISwitchable CreateSwitchable()
+        public override Applience CreateApplience()
         {
             return new Conditioner("Conditioner", 25);
         }

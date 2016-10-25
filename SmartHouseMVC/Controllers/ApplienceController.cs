@@ -15,26 +15,26 @@ namespace SmartHouseMVC.Controllers
         IList<string> listOfChannels = new List<string> { "MTV", "1+1", "ICTV", "2+2" };
         public ActionResult Index()
         {
-            IDictionary<int, ISwitchable> applienceDictionary;
+            IDictionary<int, Applience> applienceDictionary;
 
             if (Session["Apps"] == null)
             {
                 ApplienceFactory app= new LampCreator();
-                applienceDictionary = new SortedDictionary<int, ISwitchable>();
-                applienceDictionary.Add(1, app.CreateSwitchable());
+                applienceDictionary = new SortedDictionary<int, Applience>();
+                applienceDictionary.Add(1, app.CreateApplience());
                 app = new ConditionerCreator();
-                applienceDictionary.Add(2, app.CreateSwitchable());
+                applienceDictionary.Add(2, app.CreateApplience());
                 app=new MicrowaveCreator();
-                applienceDictionary.Add(3,app.CreateSwitchable() );
+                applienceDictionary.Add(3,app.CreateApplience() );
                 app = new TVCreator();
-                applienceDictionary.Add(4, app.CreateSwitchable());
+                applienceDictionary.Add(4, app.CreateApplience());
 
                 Session["Apps"] = applienceDictionary;
                 Session["NextId"] = 5;
             }
             else
             {
-                applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
+                applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
             }
 
             SelectListItem[] appList = new SelectListItem[4];
@@ -48,7 +48,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Add(string app)
         {
-            ISwitchable newApp;
+            Applience newApp;
             ApplienceFactory appCreate;
 
             switch (app)
@@ -56,24 +56,24 @@ namespace SmartHouseMVC.Controllers
                    
                 default:
                     appCreate = new LampCreator();
-                    newApp = appCreate.CreateSwitchable();
+                    newApp = appCreate.CreateApplience();
                     break;
                 case "conditioner":
                     appCreate = new ConditionerCreator();
-                    newApp = appCreate.CreateSwitchable();
+                    newApp = appCreate.CreateApplience();
                     break;
                 case "microwave":
                     appCreate = new MicrowaveCreator();
-                    newApp = appCreate.CreateSwitchable();
+                    newApp = appCreate.CreateApplience();
                     break;
                 case "tv":
                     appCreate = new TVCreator();
-                    newApp = appCreate.CreateSwitchable();
+                    newApp = appCreate.CreateApplience();
                     break;
             }
 
             int id = (int)Session["NextId"];
-            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
+            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
             applienceDictionary.Add(id, newApp);
             id++;
             Session["NextId"] = id;
@@ -83,7 +83,7 @@ namespace SmartHouseMVC.Controllers
 
         public ActionResult Switch(int id)
         {
-            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
+            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
             ISwitchable app = applienceDictionary[id];
             app.OnOff();
 
@@ -91,7 +91,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Change(int id, string action)
         {
-            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
+            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
 
 
             IChangeable app = applienceDictionary[id] as IChangeable;
@@ -111,7 +111,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Temperature(int id, string action, string temperatureTB)
         {
-            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
+            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
             ITemperatureable app = applienceDictionary[id] as ITemperatureable;
             if (action == "Temperature")
             {
@@ -123,7 +123,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Cook(int id, string action)
         {
-            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
+            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
             ICook app = applienceDictionary[id] as ICook;
             if (action == "Food")
             {
@@ -136,7 +136,7 @@ namespace SmartHouseMVC.Controllers
         public ActionResult ChannelMethod(int id, string action, string channelTV)
         {
             IList<string> list;
-            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
+            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
             IChannel app = applienceDictionary[id] as IChannel;
             switch (action)
             {
@@ -164,7 +164,7 @@ namespace SmartHouseMVC.Controllers
         }
         public ActionResult Delete(int id)
         {
-            IDictionary<int, ISwitchable> applienceDictionary = (SortedDictionary<int, ISwitchable>)Session["Apps"];
+            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
             applienceDictionary.Remove(id);
             return RedirectToAction("Index");
         }

@@ -9,7 +9,7 @@ namespace SmartHouseMVC.Models.Factory
 {
     public class LampCreator: ApplienceFactory
     {
-        public override ISwitchable CreateSwitchable()
+        public override Applience CreateApplience()
         {
             return new Lamp("Lamp", 50, 100);
         }

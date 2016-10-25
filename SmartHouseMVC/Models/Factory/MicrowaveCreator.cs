@@ -8,7 +8,7 @@ namespace SmartHouseMVC.Models.Factory
 {
     public class MicrowaveCreator: ApplienceFactory
     {
-        public override ISwitchable CreateSwitchable()
+        public override Applience CreateApplience()
         {
             return new Microwave("Microwave", 50, 250);
         }

@@ -8,7 +8,7 @@ namespace SmartHouseMVC.Models.Factory
 {
     public abstract class ApplienceFactory
     {
-        public abstract ISwitchable CreateSwitchable();
+        public abstract Applience CreateApplience();
        
     }
 }

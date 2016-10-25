@@ -10,7 +10,6 @@ namespace SmartHouseMVC.Models.Interfaces
     {
         bool State { get; }
         void OnOff();
-        string Name { get; }
-        string ShowStatus();
+        
     }
 }

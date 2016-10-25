@@ -8,7 +8,7 @@ namespace SmartHouseMVC.Models.Factory
 {
     public class TVCreator: ApplienceFactory
     {
-        public override ISwitchable CreateSwitchable()
+        public override Applience CreateApplience()
         {
             IList<string> listOfChannels = new List<string> { "MTV", "1+1", "ICTV", "2+2" };
             return new TV("TV", 8, 20, listOfChannels, 0);
