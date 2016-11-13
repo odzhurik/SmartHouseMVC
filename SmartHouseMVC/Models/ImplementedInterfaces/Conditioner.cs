@@ -7,16 +7,26 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
 {
     public class Conditioner:Applience, ITemperatureable
     {
-        
-        private int defaultTemp;
+
+       
+
+        public int DefaultTemp
+        {
+            get ; 
+            set ; 
+        }
         public string Airconditioning
         {
             get;
-            private set;
+            set;
+        }
+        public Conditioner()
+        {
+                
         }
         public Conditioner(string name, int temp)
         {
-            defaultTemp = temp;
+            DefaultTemp = temp;
             Name = name;
         }
         public int Temperature
@@ -26,14 +36,14 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
         }
         public void AirConditioning()
         {
-            if (Temperature > defaultTemp)
+            if (Temperature > DefaultTemp)
 
                 Airconditioning = "heated to " + Temperature;
 
             else
                 Airconditioning = "cooled to " + Temperature;
 
-            defaultTemp = Temperature;
+            DefaultTemp = Temperature;
         }
         public override string ToString()
 
@@ -41,7 +51,7 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
         {
             string status = base.ToString();
             if (State)
-                status += " current temperature is " + defaultTemp + " C";
+                status += " current temperature is " + DefaultTemp + " C";
             return status;
         }
 

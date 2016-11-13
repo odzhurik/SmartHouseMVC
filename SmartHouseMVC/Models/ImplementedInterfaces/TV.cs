@@ -9,19 +9,27 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
     {
         public IList<string> channels;
         public string currentChannel;
-        int max;
+        public TV()
+        {
+
+        }
         public TV(string name, int unit, int max, IList<string> listOfChannels, int positionOfCurrentChan)
         {
             Name = name;
             channels = listOfChannels;
             currentChannel = channels.ElementAt(positionOfCurrentChan);
             Unit = unit;
-            this.max = max;
+            Max = max;
+        }
+        public int Max
+        {
+            get;
+            set;
         }
         public int Unit
         {
             get;
-            private set;
+            set;
         }
 
         public IList<string> ShowChannels()
@@ -40,7 +48,7 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
         {
             if (State)
             {
-                if (Unit == max)
+                if (Unit == Max)
                     Unit = 0;
                 else
                     Unit++;
@@ -51,7 +59,7 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
             if (State)
             {
                 if (Unit == 0)
-                    Unit = max;
+                    Unit = Max;
                 else
                     Unit--;
             }

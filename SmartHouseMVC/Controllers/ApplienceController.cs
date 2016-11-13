@@ -6,36 +6,35 @@ using System.Web.Mvc;
 using SmartHouseMVC.Models.Interfaces;
 using SmartHouseMVC.Models.ImplementedInterfaces;
 using SmartHouseMVC.Models.Factory;
+using SmartHouseMVC.Models.MyDbContext;
+
 
 namespace SmartHouseMVC.Controllers
 {
     public class ApplienceController : Controller
     {
         // GET: Applience
-        IList<string> listOfChannels = new List<string> { "MTV", "1+1", "ICTV", "2+2" };
+        ApplienceContext db = new ApplienceContext();
         public ActionResult Index()
         {
-            IDictionary<int, Applience> applienceDictionary;
-
-            if (Session["Apps"] == null)
+            IList<Applience> list=new List<Applience>();
+           
+            foreach(Applience item in db.Lamps.ToList())
             {
-                ApplienceFactory app= new LampCreator();
-                applienceDictionary = new SortedDictionary<int, Applience>();
-                applienceDictionary.Add(1, app.CreateApplience());
-                app = new ConditionerCreator();
-                applienceDictionary.Add(2, app.CreateApplience());
-                app=new MicrowaveCreator();
-                applienceDictionary.Add(3,app.CreateApplience() );
-                app = new TVCreator();
-                applienceDictionary.Add(4, app.CreateApplience());
-
-                Session["Apps"] = applienceDictionary;
-                Session["NextId"] = 5;
+                list.Add(item);
             }
-            else
+            foreach(Applience item in db.Conditioneres.ToList())
             {
-                applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
+                list.Add(item);
             }
+            foreach(Applience item in db.Microwaves.ToList())
+            {
+                list.Add(item);
+            }
+           foreach(Applience item in db.TVs.ToList())
+           {
+               list.Add(item);
+           }
 
             SelectListItem[] appList = new SelectListItem[4];
             appList[0] = new SelectListItem { Text = "Lamp", Value = "lamp", Selected = true };
@@ -44,7 +43,7 @@ namespace SmartHouseMVC.Controllers
             appList[3] = new SelectListItem { Text = "TV", Value = "tv" };
             ViewBag.AppList = appList;
 
-            return View(applienceDictionary);
+            return View(list);
         }
         public ActionResult Add(string app)
         {
@@ -57,44 +56,82 @@ namespace SmartHouseMVC.Controllers
                 default:
                     appCreate = new LampCreator();
                     newApp = appCreate.CreateApplience();
+                    db.Lamps.Add((Lamp)newApp);
                     break;
                 case "conditioner":
                     appCreate = new ConditionerCreator();
                     newApp = appCreate.CreateApplience();
+                    db.Conditioneres.Add((Conditioner)newApp);
                     break;
                 case "microwave":
                     appCreate = new MicrowaveCreator();
                     newApp = appCreate.CreateApplience();
+                    db.Microwaves.Add((Microwave)newApp);
                     break;
                 case "tv":
                     appCreate = new TVCreator();
                     newApp = appCreate.CreateApplience();
+                    db.TVs.Add((TV)newApp);
                     break;
             }
-
-            int id = (int)Session["NextId"];
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
-            applienceDictionary.Add(id, newApp);
-            id++;
-            Session["NextId"] = id;
-
+              db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        public ActionResult Switch(int id)
+        public ActionResult Switch(int id, string name)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
-            ISwitchable app = applienceDictionary[id];
+            ISwitchable app;
+            switch(name)
+            {
+                
+                case "Conditioner":
+                    {
+                        app = db.Conditioneres.Find(id);
+                        break;
+                    }
+                case "Microwave":
+                    {
+                        app = db.Microwaves.Find(id);
+                        break;
+                    }
+                case "TV":
+                    {
+                        app = db.TVs.Find(id);
+                        break;
+                    }
+                default:
+                    {
+                        app = db.Lamps.Find(id);
+                        break;
+                    }
+            }
+         
             app.OnOff();
-
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public ActionResult Change(int id, string action)
+        public ActionResult Change(int id,string name, string action)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
-
-
-            IChangeable app = applienceDictionary[id] as IChangeable;
+            IChangeable app;
+            switch (name)
+            {
+               
+                case "Microwave":
+                    {
+                        app = db.Microwaves.Find(id);
+                        break;
+                    }
+                case "TV":
+                    {
+                        app = db.TVs.Find(id);
+                        break;
+                    }
+                default:
+                    {
+                        app = db.Lamps.Find(id);
+                        break;
+                    }
+            }
 
             switch (action)
             {
@@ -105,39 +142,63 @@ namespace SmartHouseMVC.Controllers
                     app.Up();
                     break;
             }
-
+            db.SaveChanges();
             return RedirectToAction("Index");
 
         }
-        public ActionResult Temperature(int id, string action, string temperatureTB)
+        public ActionResult Temperature(int id,string name, string action, string temperatureTB)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
-            ITemperatureable app = applienceDictionary[id] as ITemperatureable;
+            ITemperatureable app;
+            if(name=="Conditioner")
+            {
+                app = db.Conditioneres.Find(id);
+            }
+            else
+            {
+                app = null;
+            }
+
             if (action == "Temperature")
             {
                 app.Temperature = Convert.ToInt32(temperatureTB);
                 app.AirConditioning();
                 TempData["conditioner"] = app.Airconditioning;
             }
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public ActionResult Cook(int id, string action)
+        public ActionResult Cook(int id,string name, string action)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
-            ICook app = applienceDictionary[id] as ICook;
+            ICook app;
+            if(name=="Microwave")
+            {
+                app = db.Microwaves.Find(id);
+            }
+            else
+            {
+                app = null;
+            }
             if (action == "Food")
             {
                 app.Food = true;
 
                 app.Cook();
             }
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public ActionResult ChannelMethod(int id, string action, string channelTV)
+        public ActionResult ChannelMethod(int id,string name, string action, string channelTV)
         {
             IList<string> list;
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
-            IChannel app = applienceDictionary[id] as IChannel;
+            IChannel app;
+            if(name=="TV")
+            {
+                app = db.TVs.Find(id);
+            }
+            else
+            {
+                app = null;
+            }
             switch (action)
             {
 
@@ -160,13 +221,50 @@ namespace SmartHouseMVC.Controllers
                     break;
 
             }
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id,string name)
         {
-            IDictionary<int, Applience> applienceDictionary = (SortedDictionary<int, Applience>)Session["Apps"];
-            applienceDictionary.Remove(id);
+            Applience app;
+            switch (name)
+            {
+
+                case "Conditioner":
+                    {
+                        app = db.Conditioneres.Find(id);
+                        db.Conditioneres.Remove((Conditioner)app);
+                        break;
+                    }
+                case "Microwave":
+                    {
+                        app = db.Microwaves.Find(id);
+                        db.Microwaves.Remove((Microwave)app);
+                        break;
+                    }
+                case "TV":
+                    {
+                        app = db.TVs.Find(id);
+                        db.TVs.Remove((TV)app);
+                        break;
+                    }
+                default:
+                    {
+                        app = db.Lamps.Find(id);
+                        db.Lamps.Remove((Lamp)app);
+                        break;
+                    }
+            }
+            db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

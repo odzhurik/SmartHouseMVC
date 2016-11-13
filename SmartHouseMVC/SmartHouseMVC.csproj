@@ -40,6 +40,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -115,6 +123,28 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611051110116_InitialCreate.cs" />
+    <Compile Include="Migrations\201611051110116_InitialCreate.Designer.cs">
+      <DependentUpon>201611051110116_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611051130199_Added some new dbsets.cs" />
+    <Compile Include="Migrations\201611051130199_Added some new dbsets.Designer.cs">
+      <DependentUpon>201611051130199_Added some new dbsets.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611051145417_Added foreign keys.cs" />
+    <Compile Include="Migrations\201611051145417_Added foreign keys.Designer.cs">
+      <DependentUpon>201611051145417_Added foreign keys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611051205006_Some changes in method Seed.cs" />
+    <Compile Include="Migrations\201611051205006_Some changes in method Seed.Designer.cs">
+      <DependentUpon>201611051205006_Some changes in method Seed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611051258274_Added DefaultTemp to DB.cs" />
+    <Compile Include="Migrations\201611051258274_Added DefaultTemp to DB.Designer.cs">
+      <DependentUpon>201611051258274_Added DefaultTemp to DB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\MyDbContext\ApplienceContext.cs" />
     <Compile Include="Models\Factory\ApplienceFactory.cs" />
     <Compile Include="Models\Factory\ConditionerCreator.cs" />
     <Compile Include="Models\Factory\LampCreator.cs" />
@@ -130,6 +160,7 @@
     <Compile Include="Models\ImplementedInterfaces\Lamp.cs" />
     <Compile Include="Models\ImplementedInterfaces\Microwave.cs" />
     <Compile Include="Models\ImplementedInterfaces\TV.cs" />
+    <Compile Include="Models\MyDbContext\ApplienceContextInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -162,7 +193,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="StyleSheet.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -186,6 +219,23 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201611051110116_InitialCreate.resx">
+      <DependentUpon>201611051110116_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611051130199_Added some new dbsets.resx">
+      <DependentUpon>201611051130199_Added some new dbsets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611051145417_Added foreign keys.resx">
+      <DependentUpon>201611051145417_Added foreign keys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611051205006_Some changes in method Seed.resx">
+      <DependentUpon>201611051205006_Some changes in method Seed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611051258274_Added DefaultTemp to DB.resx">
+      <DependentUpon>201611051258274_Added DefaultTemp to DB.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

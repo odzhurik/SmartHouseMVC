@@ -1,7 +1,7 @@
 ﻿
 @using SmartHouseMVC.Models.Interfaces
 @using SmartHouseMVC.Models.ImplementedInterfaces
-@model IDictionary<int, Applience>
+@model IList<Applience>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -12,16 +12,16 @@
     @Html.DropDownList("app", (IEnumerable<SelectListItem>)ViewBag.AppList)
     <input type="submit" value="Добавить" class="btn btn-default">
 }
-@foreach (var item in Model)
+@foreach (Applience item in Model)
 {
     <div class="app-div">
-        <span class="labelstyle"> @item.Value.Name  </span>
+        <span class="labelstyle"> @item.Name </span>
         <br />
-        @if (item.Value is ISwitchable)
+        @if (item is ISwitchable)
         {
-            using (@Html.BeginForm("Switch" + '/' + item.Key, "Applience"))
+            using (@Html.BeginForm("Switch" + '/' + item.Id+'/'+item.Name, "Applience"))
             {
-                switch (item.Value.Name)
+                switch (item.Name)
                 {
                     case "Lamp":
                         {
@@ -48,10 +48,10 @@
                 <br />
             }
         }
-        @if (item.Value is IChangeable)
+        @if (item is IChangeable)
         {
 
-            using (@Html.BeginForm("Change"+'/' + item.Key, "Applience"))
+            using (@Html.BeginForm("Change"+'/' + item.Id+'/'+item.Name, "Applience"))
             {
                
                 <br />
@@ -60,11 +60,11 @@
                 <br />
             }
         }
-        @if (item.Value is ITemperatureable)
+        @if (item is ITemperatureable)
         {
-            using (@Html.BeginForm("Temperature" + '/' + item.Key, "Applience", FormMethod.Post, new { id = "myForm" }))
+            using (@Html.BeginForm("Temperature" + '/' + item.Id+'/'+item.Name, "Applience", FormMethod.Post, new { id = "myForm" }))
             {
-                <span id="spanOnOffcon" hidden="hidden">@item.Value.State</span>
+                <span id="spanOnOffcon" hidden="hidden">@item.State</span>
                 <br />
                 <input type="text" name="temperatureTB" id="temperatureTB" />
                 <input type="button" id="setButton" value="Set" class="btn btn-primary" />
@@ -80,13 +80,13 @@
 
         }
 
-        @if (item.Value is ICook)
+        @if (item is ICook)
         {
 
-            using (@Html.BeginForm("Cook"+'/' + item.Key, "Applience", FormMethod.Post, new { id = "myForm2" }))
+            using (@Html.BeginForm("Cook"+'/' + item.Id+'/'+item.Name, "Applience", FormMethod.Post, new { id = "myForm2" }))
             {
                 
-                <span id="spanOnOff" hidden="hidden">@item.Value.State</span>
+                <span id="spanOnOff" hidden="hidden">@item.State</span>
                 <br />
                 <br />
                 <input type="text" name="microTB" id="microTB" />
@@ -97,10 +97,10 @@
 
             }
         }
-        @if (item.Value is IChannel)
+        @if (item is IChannel)
         {
 
-            using (@Html.BeginForm("ChannelMethod" + '/' + item.Key, "Applience"))
+            using (@Html.BeginForm("ChannelMethod" + '/' + item.Id+'/'+item.Name, "Applience"))
             {
 
                 
@@ -123,9 +123,9 @@
         }
         <br />
         <div id="results"></div>
-        <span class="labelStatus">@item.Value.ToString()</span>
+        <span class="labelStatus">@item.ToString()</span>
         <br />
-        @using(@Html.BeginForm("Delete/"+item.Key,"Applience"))
+        @using(@Html.BeginForm("Delete/"+item.Id+'/'+item.Name,"Applience"))
         { 
         <button type="submit" class="btn btn-danger">Delete</button>
         }

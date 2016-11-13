@@ -8,7 +8,8 @@ namespace SmartHouseMVC.Models.Interfaces
 {
    public  interface IChangeable
     {
-        int Unit { get; }
+       int Unit { get; set; }
+        int Max { get; set; }
         void Up();
         void Down();
     }

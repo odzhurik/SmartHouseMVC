@@ -4,48 +4,53 @@ using System.Linq;
 using System.Timers;
 using System.Web;
 using SmartHouseMVC.Models.Interfaces;
+
 namespace SmartHouseMVC.Models.ImplementedInterfaces
 {
     public class Microwave:Applience, IChangeable, ICook
     {
-        private bool food;
-        private int max;
        
+      
+        public int Max
+        {
+            get;
+            set;
+        }
+        public Microwave()
+        {
+
+        }
         public Microwave(string name, int unit, int max)
         {
             Name = name;
             Unit = unit;
-            this.max = max;
+            Max = max;
         }
-        
+       
         public int Unit
         {
             get;
-           private set;
+            set;
         }
         public bool Food
         {
-            set
-            {
-                food = value;
-            }
-            get
-            {
-                return food;
-            }
+            set;
+
+            get;
+
         }
         public void Cook()
         {
             if(Food && State)
             {
-                food = false;
+                Food = false;
             }
         }
         public void Up()
         {
             if (State)
             {
-                if (Unit == max)
+                if (Unit == Max)
                     Unit = 10;
                 else
                     Unit += 50;
@@ -56,12 +61,12 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
             if (State)
             {
                 if (Unit<=0)
-                    Unit = max;
+                    Unit = Max;
                 else
                    
                     Unit -= 50;
                 if (Unit == 0)
-                    Unit = max;
+                    Unit = Max;
             }
         }
         public override string ToString()

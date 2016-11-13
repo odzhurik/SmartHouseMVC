@@ -3,33 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using SmartHouseMVC.Models.Interfaces;
+
 namespace SmartHouseMVC.Models.ImplementedInterfaces
 {
     public abstract class Applience: ISwitchable
     {
-        private bool state;
-        private string name;
+
+        public int Id { get; set; }
+        
         public string Name
         {
-            protected set
-            {
-                name = value;
-            }
-             get
-        {
-            return name;
+           get;set;
         }
-        }
+
         public bool State
         {
-            set
-            {
-                state = value;
-            }
-            get
-            {
-                return state;
-            }
+            get;
+            set;
         }
         public  void OnOff()
         {
@@ -47,9 +37,9 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
         {
             string status = " ";
             if (State)
-                status = name+" is on " ;
+                status = Name+" is on " ;
             else
-                status = name+" is off";
+                status = Name+" is off";
             return status;
         }
     }

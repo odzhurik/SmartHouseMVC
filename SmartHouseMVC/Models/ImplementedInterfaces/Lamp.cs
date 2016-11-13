@@ -7,24 +7,34 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
 {
     public class Lamp : Applience, IChangeable
     {
-        int max;
+        
+
+        public int Max
+        {
+            get;
+            set;
+        }
+        public Lamp()
+        {
+
+        }
         public Lamp(string name,int unit, int max)
         {
             Name = name;
             Unit = unit;
-            this.max = max;
+            Max = max;
         }
         public int Unit
         {
             get;
-           private set;
+            set;
         }
 
         public void Up()
         {
             if (State)
             {
-                if (Unit == max)
+                if (Unit == Max)
                     Unit = 10;
                 else
                     Unit += 10;
@@ -35,7 +45,7 @@ namespace SmartHouseMVC.Models.ImplementedInterfaces
             if (State)
             {
                 if (Unit == 10)
-                    Unit = max;
+                    Unit = Max;
                 else
                     Unit -= 10;
             }
